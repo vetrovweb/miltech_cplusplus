@@ -16,6 +16,6 @@ int main() {
         << fuelLevel3 << "\t - універсальна\n"
         << fuelLevel4 << "\t - нульове значення\n"
     << std::endl;
-
+    
     return 0;
 }
