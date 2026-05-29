@@ -34,19 +34,36 @@ int main() {
     // bool t1 = 12;
     // std::cout << t1 << endl;
 
-    int age{};
-    std::cout << "Введіть Ваш вік: ";
-    std::cin >> age;
+    // int age{};
+    // std::cout << "Введіть Ваш вік: ";
+    // std::cin >> age;
 
-    if (age < 18) {
-        std::cout << "Вам менше 18-ти. Упс..." << std::endl;
+    // if (age < 18) {
+    //     std::cout << "Вам менше 18-ти. Упс..." << std::endl;
+    // }
+    // else if (age >= 30 ){
+    //     std::cout << "Трохи старий, але красавчик" << std::endl;
+    // }
+    // else {
+    //     std::cout << "Ви красавчик" << std::endl;
+    // }
+
+    // >, <, =
+    int x{}, y{};
+
+    cout << "Enter first number: " << endl;
+    cin >> x;
+    cout << "Enter second number: " << endl;
+    cin >> y;
+
+    if (x > y) {
+        cout << "x > y" << endl;
     }
-    else if (age >= 30 ){
-        std::cout << "Трохи старий, але красавчик" << std::endl;
+    else if (x < y) {
+        cout << "x < y" << endl;
     }
     else {
-        std::cout << "Ви красавчик" << std::endl;
+        cout << "y = x" << endl;
     }
-
     return 0;
 }
