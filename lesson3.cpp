@@ -9,7 +9,7 @@
 int main() {
     using namespace std;
 
-    float price = 500;       // start price
+    float price = 50;       // start price
     char userType{};
     bool hasCoupon = false;
     float discount{};
@@ -47,6 +47,10 @@ int main() {
     if (hasCoupon) {
         discountCoupon = 50;
         total = total - discountCoupon;
+    }
+
+    if (total < 0) {
+        total = 0;
     }
 
     // Налаштовуємо вивід: фіксована точка та 2 знаки після коми
