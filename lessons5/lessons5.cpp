@@ -10,24 +10,24 @@
 int main() {
     using namespace std;
     //
-    // // Масив або рядок із символами анімації для зручності
-    // string loader = "/\\/";
-    //
-    // while (true) {
-    //     for (char symbol : loader) {
-    //         // Старий, нудний спосіб:
-    //         // for (int i = 0; i < loader.length(); i++) {
-    //         //     char symbol = loader[i];
-    //         //     // код...
-    //         // }
-    //
-    //         // \r повертає курсор на початок рядка, друкуємо символ
-    //         cout << "\rЗавантаження... " << symbol << flush;
-    //
-    //         // Робимо паузу в 150 мілісекунд (0.15 секунди)
-    //         this_thread::sleep_for(chrono::milliseconds(150));
-    //     }
-    // }
+    // Масив або рядок із символами анімації для зручності
+    string loader = "/\\/";
+
+    while (true) {
+        for (char symbol : loader) {
+            // Старий, нудний спосіб:
+            // for (int i = 0; i < loader.length(); i++) {
+            //     char symbol = loader[i];
+            //     // код...
+            // }
+
+            // \r повертає курсор на початок рядка, друкуємо символ
+            cout << "\rЗавантаження... " << symbol << flush;
+
+            // Робимо паузу в 150 мілісекунд (0.15 секунди)
+            this_thread::sleep_for(chrono::milliseconds(150));
+        }
+    }
 
     // int temp{};
     //
