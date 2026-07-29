@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <array>
+#include <algorithm>
 
 using namespace std;
 
@@ -38,17 +39,17 @@ int main() {
     // cout << '\n';
     // cout << '\n';
     // Введення кількості елементів з консолі
-    // vector<int> arr3;
+    vector<int> arr3;
     //
-    // std::cout << "Вводьте числа (0 для завершення):\n";
-    // int n = 0;
-    // while (cin >> n)
-    // {
-    //     //int n;
-    //     //std::cin >> n;
-    //     //if (n == 0) break;
-    //     arr3.push_back(n);
-    // }
+    std::cout << "Вводьте числа (0 для завершення):\n";
+    int n = 0;
+    while (cin >> n)
+    {
+        //int n;
+        //std::cin >> n;
+        //if (n == 0) break;
+        arr3.push_back(n);
+    }
     //
     // cout << '\n' << "-----------------" << '\n';
     // for (int x : arr3) { cout << x << " ";}
@@ -60,26 +61,26 @@ int main() {
 
 
     // Пошук другого найбільшого елемента масиву
-    vector<int> arr4 = {8, 4, 5, 2, 3, 7, 9};
-
-    for (int x: arr4) {
-        cout << x << '\t';
-    }
-
-    // Index
-    int max1 = 0;
-    int max2 = 0;
-    for (int i = 0; i < arr4.size(); i++) {
-        if (arr4[i] > max1) {
-            max2 = max1;
-            max1 = arr4[i];
-            // if (max1 > max2) {
-            //
-            // }
-        }
-    }
-    cout << '\n';
-    cout << "Другий набільший елемент масиву: " << max2 << endl;
+    // vector<int> arr4 = {8, 4, 5, 2, 3, 7, 9};
+    //
+    // for (int x: arr4) {
+    //     cout << x << '\t';
+    // }
+    //
+    // // Index
+    // int max1 = 0;
+    // int max2 = 0;
+    // for (int i = 0; i < arr4.size(); i++) {
+    //     if (arr4[i] > max1) {
+    //         max2 = max1;
+    //         max1 = arr4[i];
+    //         // if (max1 > max2) {
+    //         //
+    //         // }
+    //     }
+    // }
+    // cout << '\n';
+    // cout << "Другий набільший елемент масиву: " << max2 << endl;
 
     return 0;
 }
