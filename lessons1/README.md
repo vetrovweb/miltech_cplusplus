@@ -1,1 +1,3 @@
-### 💻 C++ Practice & Homework | Miltech C++
+## Урок 1
+
+#### 💻 C++ Practice & Homework | Miltech C++
