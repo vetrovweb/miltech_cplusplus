@@ -80,7 +80,8 @@ int main() {
     // printValue(&x);
     // printValue(nullptr);
 
-    // Нова задача Міняємо місцями значення двох змінних
+    // Нова задача
+    // Міняємо місцями значення двох змінних
     int a = 50, b = 40;
     cout << a << '\t' << b << endl;
     swapNumbers(&a, &b);
@@ -94,15 +95,18 @@ int main() {
     int* arr2 = new int[m];
 
     for (int i = 0; i < m; ++i) { cin >> arr1[i]; }
+    cout << '\n';
     for (int i = 0; i < m; ++i) { cin >> arr2[i]; }
 
     for (int i = 0; i < m; ++i) { cout << arr1[i] << '\t'; }
+    cout << '\n';
     for (int i = 0; i < m; ++i) { cout << arr2[i] << '\t'; }
-
+    cout << '\n';
 
     swapMassive(arr1, arr2, m);
 
     for (int i = 0; i < m; ++i) { cout << arr1[i] << '\t'; }
+    cout << '\n';
     for (int i = 0; i < m; ++i) { cout << arr2[i] << '\t'; }
 
     return 0;
@@ -116,7 +120,6 @@ void printValue(int* ptr) {
         cout << *ptr << endl;
         cout << ptr << endl;
     }
-
     else
         cout << nullptr << endl;
 }
