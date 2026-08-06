@@ -1,0 +1,226 @@
+//
+// Created by Кирило Вєтров on 05.08.2026.
+// Task Manager v1.0
+// Використовуємо звичайні масиви даних
+//
+#include <iostream>
+
+using namespace std;
+
+// Структура для менеджера завдань
+struct TaskManager {
+    string title {};                                                    // за замовчуванню - ""
+    bool isDone {false};                                                // за замовчуванню - false
+};
+
+
+int main() {
+
+    string taskSearch;                                                  // для пошуку конкретної задачі
+    const int size = 5;                                                 // використовуємо статичний масив
+    int choise = 0;                                                     // користувацька зміна
+
+    TaskManager tm[size];                                               // створюємо структуру TaskManager з масивів tm розміром size
+
+    // Заповнили тестовими даними
+    for (int i = 0; i < size; ++i) {
+        tm[i].title = "Task " + to_string(i);
+        // додамо в наступній версії рандомний вибір між true та false
+        // поки парні - true
+        if ( i % 2 == 0 ) {
+            tm[i].isDone = true;
+        }
+        // а непарні - false
+        else {
+            tm[i].isDone = false;
+        }
+    }
+    // --------------------------------------------------------------
+
+    // Постійний масив для виведення списку задач
+    while (true) {
+        cout <<
+            '\n' <<
+            "====== TASK MANAGER ======" << '\n' <<
+            "1. Показати всі задачі" << '\n' <<
+            "2. Додати задачу" << '\n' <<
+            "3. Видалити задачу" << '\n' <<
+            "4. Позначити як виконану" << '\n' <<
+            "5. Показати тільки виконані" << '\n' <<
+            "6. Показати тільки невиконані" << '\n' <<
+            "7. Знайти задачу" << '\n' <<
+            "8. Відсортувати задачі" << '\n' <<
+            "9. Вийти" << '\n' <<
+            '\n' <<
+            "Ваш вибір: " << '\t';
+        // ----------------------------------------------------------
+
+
+        // -------------------- Менеджер задач ----------------------
+        cin >> choise;                                                  // очікуємо реакцію користувача, тільки int
+        switch (choise) {
+            // Показати всі задачі
+            case 1:
+                // Перегляд задач
+                cout << "========= TASK  ==========" << endl;
+                for (const auto& task : tm) {                           // сonst - про всяк випадок, бо в нас статичний масив
+                                                                        // auto& - & уникає зайвого копіювання елементів (важливо для std::string).
+                    if (!task.title.empty()) {
+                        cout << task.title << '\t' << task.isDone << '\n' ;
+                    }
+                }
+
+                cout << "--------------------------" << endl;
+                cout << "Всього задач: " << size << endl;
+                cout << "--------------------------" << endl;
+
+                cout << "Вийти до головного меню, натисніть 0: ";
+                while (cin >> choise) {
+                    if (choise == 0) {
+                        break;
+                    }
+                }
+            break;
+            // ------------------------------------------------------
+
+            // ------------------ Додавання задач -------------------
+            case 2:
+                cout << "----------------------" << endl;
+                cout << "Додати задачу. Напишіть її назву: " << '\n';
+                cin >> tm[0].title;
+                cout << "Зазначте виконання завдання (виконана чи невиконана): " << '\n';
+                cin >> tm[0].isDone;
+                // потрібно додати можливість додавання ще завдання, тобто більшого масиву, в ін. версії
+            break;
+            // ------------------------------------------------------
+                
+            case 3:
+                cout << "----------------------" << endl;
+                cout << "Видалення задачі!" << '\n';
+
+                // Перегляд задач
+                for (int i = 0; i < size; i++) {
+                    if (!tm[i].title.empty()) {
+                        cout << tm[i].title << '\t' << tm[i].isDone << '\n' ;
+                    }
+                    // else {
+                    //     cout << "Задач не знайдено!" << endl;
+                    //     break;
+                    // }
+                }
+                cout << endl;
+                cout << "Виберіть задачу для видалення (введіть її номер): ";
+
+                choise = 0;
+                while (cin >> choise) {
+                    //cin >> choise;
+                    if (choise < size || choise > 0) {
+                        tm[choise].title = "";
+                        tm[choise].isDone = false;
+                        cout << "Задачу під номером " << choise << " видалено" << endl;
+                        break;
+                    }
+                    else {
+                        cout << "Такої задачі не існує" << endl;
+                    }
+                }
+                break;
+
+
+            case 4:
+                // Позначити як виконану
+                cout << endl;
+                // Перегляд задач
+                for (int i = 0; i < size; i++) {
+                    if (!tm[i].title.empty()) {
+                        cout << tm[i].title << '\t' << tm[i].isDone << '\n';
+                    }
+                    // else {
+                    //     cout << "Задач не знайдено!" << endl;
+                    //     break;
+                    // }
+                }
+                cout << endl;
+                cout << "Виберіть задачу для правки (введіть її номер): ";
+
+                choise = 0;
+                while (cin >> choise) {
+                    //cin >> choise;
+                    if (choise < size || choise > 0) {
+                        tm[choise].isDone = true;
+                        cout << "Задачу під номером " << choise << " позначено як виконану" << endl;
+                        break;
+                    }
+                    else {
+                        cout << "Такої задачі не існує" << endl;
+                    }
+                }
+                break;
+
+            case 5:
+                // Показати тільки виконані задачі
+                for (int i = 0; i < size; i++) {
+                    if (!tm[i].title.empty() && tm[i].isDone) {
+                        cout << tm[i].title << '\t' << tm[i].isDone << '\n' ;
+                    }
+                    // else {
+                    //     cout << "Задач не знайдено!" << endl;
+                    //     break;
+                    // }
+                }
+                break;
+
+            case 6:
+                // Показати тільки невиконані задачі
+                for (int i = 0; i < size; i++) {
+                    if (!tm[i].title.empty() && !tm[i].isDone) {
+                        cout << tm[i].title << '\t' << tm[i].isDone << '\n' ;
+                    }
+                    // else {
+                    //     cout << "Задач не знайдено!" << endl;
+                    //     break;
+                    // }
+                }
+                break;
+
+            case 7:
+                cout << "Пошук необхідної задачі, введіть її назву: ";
+                // Показати необхідну задачу
+                while (getline(cin, taskSearch)) {
+                    for (int i = 0; i < size; i++) {
+                        if (tm[i].title == taskSearch) {
+                            cout << tm[i].title << '\t' << tm[i].isDone << '\n';
+                        }
+                        // else {
+                        //     cout << "Задач не знайдено!" << endl;
+                        //     break;
+                        // }
+                    }
+                    if (taskSearch == "Exit") {
+                        break;
+                    }
+                }
+                break;
+
+            case 8:
+                // Сортування масивів
+                cout << endl;
+                cout << "Сортуємо за виконням" << endl;
+                // //cout << "1. Відсортувати за зростанням" << endl;
+                // //cout << "2. Відсортувати за зростанням" << endl;
+                // for (int i = 0; i < size; i++) {
+                //     if (tm[i].isDone) {
+                //         tm[i].title =;
+                //         tm[i].isDone =;
+                //         tm[i].comments =;
+                //     }
+                // }
+                break;
+
+            case 9: return 0;
+            default: cout << "Введіть правильний пункт: \n"; break;
+        }
+    }
+
+    return 0;
+}
