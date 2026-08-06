@@ -7,12 +7,14 @@
 using namespace std;
 
 struct TaskManager {
-    string title{};
-    bool isDone{false};
-    string comments{};
+    string title {};
+    bool isDone {false};
 };
 
 int main() {
+
+    // 1. Ініціалізуємо генератор поточним часом (робиться 1 раз на початку програми)
+    std::srand(std::time(nullptr));
 
     // TaskManager task1 {"Завдання 1", true, "Без коментарів"};
     // TaskManager task2 {"Завдання 2", false, "Щось пішло не за планом"};
@@ -23,38 +25,64 @@ int main() {
     //      << '\t' << task1.comments << endl;
 
     int size = 5;
+    int size_new = size + 1;
     TaskManager tm[size];
+    TaskManager tm_new[size_new];
 
+    //
     for (int i = 0; i < size; i++) {
         tm[i].title = "Task " + to_string(i);
+        tm[i].isDone = rand() % 2;
     }
 
+    //
     for (int i = 0; i < size; i++) {
-        if (tm[i].title == "0") {
-            cout << tm[i].title << endl;
+        // boolalpha — це маніпулятор виводу, який виводить булеві значення як слова "true" / "false"
+        cout << tm[i].title << '\t' << boolalpha << tm[i].isDone << endl;
+    }
+
+    //
+    for (int i = 0; i < size_new; i++) {
+        cout << tm_new[i].title << '\t' << boolalpha << tm_new[i].isDone << endl;
+    }
+
+    // Copy masiv
+    for (int i = 0; i < size_new; i++) {
+        tm_new[i].title = tm[i].title;
+        tm_new[i].isDone = tm[i].isDone;
+        if (tm_new[i].title.empty()) {
+            getline(cin, tm_new[i].title);
+            cin >> tm_new[i].isDone;
+            //tm_new[i].title = "Task 24";
+            //tm_new[i].isDone = true;
         }
     }
 
-    int enter = 0;
-    cout << "Щоб ввести задачу натисніть 1: " << endl;
-    cin >> enter;
-    if (enter == 1) {
-        cout << "Напишіть назву: " << endl;
-
-        // Очищаємо буфер від залишкового '\n'
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        getline(cin, tm[0].title);
+    for (int i = 0; i < size_new; i++) {
+        cout << tm_new[i].title << '\t' << boolalpha << tm_new[i].isDone << endl;
     }
 
-    if (enter == 2) {
-        for (int i = 0; i < size; i++) {
-            if (tm[i].title != "0") {
-                cout << tm[i].title << endl;
-            }
-        }
-    }
-
-    cout << tm[0].title << endl;
+    //
+    // int enter = 0;
+    // cout << "Щоб ввести задачу натисніть 1: " << endl;
+    // cin >> enter;
+    // if (enter == 1) {
+    //     cout << "Напишіть назву: " << endl;
+    //
+    //     // Очищаємо буфер від залишкового '\n'
+    //     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    //     getline(cin, tm[0].title);
+    // }
+    //
+    // if (enter == 2) {
+    //     for (int i = 0; i < size; i++) {
+    //         if (tm[i].title != "0") {
+    //             cout << tm[i].title << endl;
+    //         }
+    //     }
+    // }
+    //
+    // cout << tm[0].title << endl;
     // STask task;
     // task.name = "Task 121312321";
     // task.isDone = true;
