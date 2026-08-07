@@ -1,7 +1,7 @@
 //
 // Created by Кирило Вєтров on 05.08.2026.
-// Task Manager v1.0
-// Використовуємо звичайні масиви даних
+// Task Manager
+// Використовуємо динамічні масиви даних
 //
 #include <iostream>
 
@@ -16,25 +16,21 @@ struct TaskManager {
 
 int main() {
 
+    // 1. Ініціалізуємо генератор поточним часом (робиться 1 раз на початку програми)
+    srand(time(nullptr));
+
     string taskSearch;                                                  // для пошуку конкретної задачі
     int size = 5;                                                       // використовуємо статичний масив
     int choise = 0;                                                     // користувацька зміна
 
-    TaskManager tm[size];                                               // створюємо структуру TaskManager з масивів tm розміром size
-
+    //TaskManager tm[size];                                             // створюємо структуру TaskManager з масивів tm розміром size
+    TaskManager* tm = new TaskManager[size]{};                          // динамічний масив
 
     // ----------------- Заповнили тестовими даними -----------------
     for (int i = 0; i < size; ++i) {
         tm[i].title = "Task " + to_string(i);
-        // додамо в наступній версії рандомний вибір між true та false
-        // поки парні - true
-        if ( i % 2 == 0 ) {
-            tm[i].isDone = true;
-        }
-        // а непарні - false
-        else {
-            tm[i].isDone = false;
-        }
+        // рандомний вибір між false та true
+        tm[i].isDone = rand() % 2;
     }
     // --------------------------------------------------------------
 
@@ -64,61 +60,49 @@ int main() {
             case 1:
                 // Перегляд задач
                 cout << "========= TASK ===========" << endl;
-                for (const auto& task : tm) {                           // сonst - про всяк випадок, бо в нас статичний масив
-                                                                        // auto& - & уникає зайвого копіювання елементів (важливо для std::string).
-                    if (!task.title.empty()) {
-                        cout << task.title << '\t' << task.isDone << '\n' ;
-                    }
+                for (int i = 0; i < size; i++) {
+                    cout << tm[i].title << '\t'
+                    //<< tm[i].isDone << '\n';
+                    << (tm[i].isDone ? "[ Виконано ]" : "[ У процесі ]") << '\n'; // тернарний оператор (a > b) ? a : b
                 }
 
-                cout << "--------------------------" << endl;
-                cout << "Всього задач: " << size << endl;
-                cout << "--------------------------" << endl;
-
-                cout << "Вийти до головного меню, натисніть 0: ";
+                cout << '\n' << "Вийти до головного меню натисніть будь-яку клавішу: ";
                 while (cin >> choise) {
-                    if (choise == 0) {
                         break;
                     }
-                }
             break;
             // ------------------------------------------------------
 
             // ------------------ Додавання задач -------------------
-            case 2:
+            case 2: {
                 cout << "======== ADD TASK =========" << endl;
-                // Оскільки статичний масив, то створює копію масива + елемент size_new = size + 1
-                // int size_new = size;
-                // size_new++;
-                // TaskManager tm_new[size_new];
-                //size_new++;
-                //TaskManager tm_new[size_new];
 
-                //for (int i = 0; i < size_new; i++) {
-                //    tm_new[i].title = tm[i].title;
-                //    tm_new[i].isDone = tm[i].isDone;
+                // Створюємо новий масив з + елементом
+                TaskManager* tm_new = new TaskManager[size + 1];
 
-                //    if (tm_new[i].title.empty()) {
-
-
-                // Зміщаємо всі елементи масиву, тобто перший (0-вий) видаляємо
-                // щоб в останній можна записати нове значення
-                for (int i = 0; i < size - 1; i++) {
-                    tm[i].title = tm[i + 1].title;
-                    tm[i].isDone = tm[i + 1].isDone;
-                    //
+                // Копіюємо старі дані
+                for (int i = 0; i < size; ++i) {
+                    tm_new[i] = tm[i];
                 }
+                // Безпечне очищення буфера перед getline замість cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                if (cin.peek() == '\n') {
+                    cin.ignore();
+                }
+                // Зчитуємо назву
+                cout << "Напишіть назву задачі: ";
+                getline(cin, tm_new[size].title);
+                // Зчитуємо статус
+                cout << "Вкажіть чи виконана задача (1 - так, 0 - ні): ";
+                cin >> tm_new[size].isDone;                             // якщо буде інша цифра програма зациклиться
+                // Видаляємо старий масив
+                delete[] tm;
+                // Оновлюємо вказівник та розмір
+                tm = tm_new;
+                size++;
 
-                // Записуємо значення в останній елемент масиву
-                cout << "Напишіть назву задачі, що додаємо: " << '\n';
-                // Очищаємо буфер від залишкового '\n'
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                // Записуємо в останній елемент масиву
-                getline(cin, tm[size - 1].title);
-                cout << "Вкажіть чи виконана задача: " << '\n';
-                cin >> tm[size - 1].isDone;
-
+                cout << "Задачу успішно додано!\n";
                 break;
+            }
             // ------------------------------------------------------
 
             // ------------------ Видалення задач -------------------
@@ -231,6 +215,9 @@ int main() {
             default: cout << "Введіть правильний пункт: \n"; break;
         }
     }
+    //
+    // delete[] tm;                                                     // правильне видалення всієї пам'яті
+    // tm = nullptr;                                                    // захист від повторного використання
 
     return 0;
 }
