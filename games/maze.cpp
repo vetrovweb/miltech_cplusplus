@@ -6,6 +6,10 @@
 
 using namespace std;
 
+void movePlayer(vector<vector<char>>& map, int x, int y) {
+    cout << map[x][y] << " ";
+}
+
 int main() {
 #include <array>
 
@@ -57,17 +61,17 @@ int main() {
                 cout << 'w';
                 break;
 
-            // left
+                // left
             case 'a':
                 cout << 'a';
                 break;
 
-            // down
+                // down
             case 's':
                 cout << 's';
                 break;
 
-            // right
+                // right
             case 'd':
                 bool flag = false;
 
@@ -88,6 +92,12 @@ int main() {
                     }
                     cout << endl;
                 }
+
+                //int movePlayer(vector<vector<char>>& map, int* x, int* y);
+                movePlayer(map, 1, 1);
+                //
+                    //char map = 'P';
+                //}
                 //cout << 'd';
                 break;
 
