@@ -105,16 +105,16 @@ int main() {
     // Видаліть із вектора всіх студентів, у яких середній бал менший за 60.0
     // (використайте std::erase_if та лямбда-функцію).
 
-            // запис теж коректний [](Student s). Це означає, що під час перевірки кожного студента C++ робить повну копію
-            // об'єкта Student у пам'яті.Щоб програма працювала швидше приймайте об'єкти за константним посиланням:
-            // students.erase(std::remove_if(students.begin(), students.end(), [](const Student& s) {
-            //     return s.avrgScore < 4.5;
-            //  }), students.end());
+    // запис теж коректний [](Student s). Це означає, що під час перевірки кожного студента C++ робить повну копію
+    // об'єкта Student у пам'яті.Щоб програма працювала швидше приймайте об'єкти за константним посиланням:
+    // students.erase(std::remove_if(students.begin(), students.end(), [](const Student& s) {
+    //     return s.avrgScore < 4.5;
+    //  }), students.end());
 
     // або так ...
     // Стандарт C++20 або новіший, у старіших версіях цієї функції просто немає.
-            // Правило MISRA C++ 0.1.2 говорить: «Значення, яке повертає функція, має бути обов'язково використане».
-            // "Я знаю, що там є результат, але я свідомо його ігнорую" void
+    // Правило MISRA C++ 0.1.2 говорить: «Значення, яке повертає функція, має бути обов'язково використане».
+    // "Я знаю, що там є результат, але я свідомо його ігнорую" void
     (void)std::erase_if(students, [](const Student& s) {
         return s.avrgScore < 60;
     });
@@ -140,7 +140,54 @@ int main() {
     // Task 2 for Gemini
     // ------------- 2. «Система управління складом (Inventory System)» --------------
     // Ви розробляєте модуль для аналізу товарів на складі. Дані зберігаються у векторі об'єктів Item.
+    struct Item {
+        std::string name;                            // Назва товару
+        double price;                                // Ціна за одиницю
+        int quantity;                                // Кількість на складі
+        std::string category;                        // Категорія (наприклад: "Electronics", "Food", "Clothing")
+    };
 
+    // 2. Умова задачі
+    std::cout << "===========================================================" << std::endl;
+    // Створіть вектор із 7–8 товарів різних категорій (з різними цінами та кількістю).
+    // Виконайте наступні операції, використовуючи алгоритми STL та лямбда-функції:
+    std::vector<Item> inventory = {
+        {"Laptop", 1200.0, 3, "Electronics"},
+        {"Smartphone", 800.0, 10, "Electronics"},
+        {"Bread", 1.5, 50, "Food"},
+        {"T-Shirt", 25.0, 2, "Clothing"},
+        {"Headphones", 150.0, 1, "Electronics"},
+        {"Apple", 0.8, 100, "Food"},
+        {"Jacket", 120.0, 4, "Clothing"}
+    };
+
+    for (const auto& element : inventory) {
+        std::cout << element.name << ' ' << element.price << std::endl;
+    }
+    std::cout << std::endl;
+
+    // Індексація цін (Модифікація std::for_each):
+    // Підніміть ціну на 10% для всіх товарів із категорії "Electronics".
+    // (Підказка: лямбда має приймати елемент за неконстантним посиланням Item&).
+    std::for_each(inventory.begin(), inventory.end(), [](Item& p) {
+        p.price = p.price + 10;
+    });
+
+    for (const auto& element : inventory) {
+        std::cout << element.name << ' ' << element.price << std::endl;
+    }
+
+    // Пошук найдорожчого товару (std::max_element):
+    // Знайдіть товар із найвищою загальною вартістю на складі (ціна×кількість) і виведіть його назву та розраховану суму.
+    double max_price = 0;
+    auto max_price_it = inventory.begin();
+    for (auto it = inventory.begin(); it != inventory.end(); ++it) {
+        if (it->price > max_price_it->price) {
+            max_price = it->price;
+            max_price_it = it;
+        }
+    }
+    std::cout << '\n' << "Max price: " << max_price_it->name << '\t' << max_price_it->price << std::endl;
 
     return 0;
 }
