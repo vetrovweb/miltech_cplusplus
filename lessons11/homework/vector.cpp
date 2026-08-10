@@ -179,15 +179,26 @@ int main() {
 
     // Пошук найдорожчого товару (std::max_element):
     // Знайдіть товар із найвищою загальною вартістю на складі (ціна×кількість) і виведіть його назву та розраховану суму.
-    double max_price = 0;
     auto max_price_it = inventory.begin();
     for (auto it = inventory.begin(); it != inventory.end(); ++it) {
-        if (it->price > max_price_it->price) {
-            max_price = it->price;
+        if (it->price * it->quantity > max_price_it->price * max_price_it->quantity) {
             max_price_it = it;
         }
     }
-    std::cout << '\n' << "Max price: " << max_price_it->name << '\t' << max_price_it->price << std::endl;
+    std::cout << '\n' << "Max price: " << max_price_it->name << ' ' << max_price_it->price << '\n'
+        << "Total cost of goods: " << max_price_it->price * max_price_it->quantity << std::endl;
+
+    // Для порівняння, ось той самий функціонал через STL-алгоритм
+    if (!inventory.empty()) {
+        const auto max_price_it = std::max_element(inventory.begin(), inventory.end(),
+            [](const Item& a, const Item& b) {
+                return (a.price * a.quantity) < (b.price * b.quantity);
+            });
+
+        std::cout << "\nMax price: " << max_price_it->name << ' ' << max_price_it->price << '\n'
+                  << "Total cost of goods: " << (max_price_it->price * max_price_it->quantity) << std::endl;
+    }
+
 
     return 0;
 }
