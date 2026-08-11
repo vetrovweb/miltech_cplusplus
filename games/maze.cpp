@@ -156,6 +156,7 @@ int main() {
     char control;                                                                   // кнопка
     int coins = 0;                                                                  // монети
     bool flag_win = false;                                                          // флаг перемоги
+    bool check = true;                                                             // якщо натискають інші клавіші
 
     // ----------------------------------------------------------------------------
     // Playing field
@@ -194,34 +195,42 @@ int main() {
                 // if (flag_win) {
                 //     return 0;
                 // }
-
+                check = true;
                 break;
 
             // left
             case 'a':
                 movePlayer(playingField, x, y, step, control, coins, flag_win);
+                check = true;
                 break;
 
             // down
             case 's':
                 movePlayer(playingField, x, y, step, control, coins, flag_win);
+                check = true;
                 break;
 
             // right
             case 'd':
                 movePlayer(playingField, x, y, step, control, coins, flag_win);
+                check = true;
                 break;
 
             //case 9: return 0;
-            //default: cout << "Введіть правильний пункт: \n"; break;
+            default:
+                if (control != 'w' && control != 'a' && control != 's' && control != 'd') {
+                    check = false;
+                    break;
+                }
         }
-
-        Show(playingField);
-        cout << "Count steps: " << step << endl;
-        cout << "Coins: " << coins << endl;
-        if (flag_win) {
-            cout << "You Win! Congratulations!" << endl;
-            return 0;
+        if (check) {
+            Show(playingField);
+            cout << "Count steps: " << step << endl;
+            cout << "Coins: " << coins << endl;
+            if (flag_win) {
+                cout << "You Win! Congratulations!" << endl;
+                return 0;
+            }
         }
     }
     // ============================================================================
