@@ -8,7 +8,7 @@
 using namespace std;
 
 void movePlayer(vector<vector<char>>& new_field, int& x, int& y, int& step, char move) {
-    // Питаємо що попереду і якщо можна заміняємо місцями символи
+    // Питаємо що попереду і якщо можна, заміняємо місцями символи
     switch (move) {
         case 'w':
             if (new_field[x-1][y] == '.') {
@@ -17,58 +17,48 @@ void movePlayer(vector<vector<char>>& new_field, int& x, int& y, int& step, char
                 new_field[x][y] = 'P';
                 // Постійно оновлюємо (не залежно від напрямку)
                 step++;
-                //cout << "char - " << left << endl;
             }
             // рахуємо кроки, навіть якщо не можна йти
             else if (new_field[x-1][y] == '#') {
                 step++;
             }
-            break;
+        break;
 
         case 'a':
             if (new_field[x][y-1] == '.') {
                 new_field[x][y] = '.';
                 y--;
                 new_field[x][y] = 'P';
-                // Постійно оновлюємо (не залежно від напрямку)
                 step++;
-                //cout << "char - " << left << endl;
             }
-            // рахуємо кроки, навіть якщо не можна йти
             else if (new_field[x][y-1] == '#') {
                 step++;
             }
-            break;
+        break;
 
         case 's':
             if (new_field[x+1][y] == '.') {
                 new_field[x][y] = '.';
                 x++;
                 new_field[x][y] = 'P';
-                // Постійно оновлюємо (не залежно від напрямку)
                 step++;
-                //cout << "char - " << left << endl;
             }
-            // рахуємо кроки, навіть якщо не можна йти
             else if (new_field[x+1][y] == '#') {
                 step++;
             }
-            break;
+        break;
 
         case 'd':
             if (new_field[x][y+1] == '.') {
                 new_field[x][y] = '.';
                 y++;
                 new_field[x][y] = 'P';
-                // Постійно оновлюємо (не залежно від напрямку)
                 step++;
-                //cout << "char - " << left << endl;
             }
-            // рахуємо кроки, навіть якщо не можна йти
             else if (new_field[x][y+1] == '#') {
                 step++;
             }
-            break;
+        break;
 
         //default:
     }
@@ -82,6 +72,7 @@ void Show(vector<vector<char>>& arr) {
         cout << endl;
     }
 }
+
 
 int main() {
 #include <array>
@@ -105,10 +96,11 @@ int main() {
 
     int step = 0;                                                                   // рахунок ходів (кроків)
     int x = 1, y = 1;                                                               // початкові координати гравця
+    char control;                                                                   // кнопка
 
-    // ------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------
     // Playing field
-    // ------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------
     vector <vector<char>> playingField {
         {
             {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'},
@@ -122,59 +114,52 @@ int main() {
             {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'}
         }
     };
+    // ============================================================================
 
     // Виведення динамічного масиву типу матриця
     // Add function showing
     Show(playingField);
 
-    // Інший варіант виведення даних
-    // ...
 
-
+    // ----------------------------------------------------------------------------
     // Переміщення гравця P
-    char control;
+    // ----------------------------------------------------------------------------
     while (cin >> control) {
         switch (control) {
+
             // up
             case 'w':
-                //cout << 'w';
                 movePlayer(playingField, x, y, step, control);
                 Show(playingField);
                 cout << "Count steps: " << step << endl;
                 break;
 
-                // left
+            // left
             case 'a':
-                //cout << 'a';
                 movePlayer(playingField, x, y, step, control);
                 Show(playingField);
                 cout << "Count steps: " << step << endl;
                 break;
 
-                // down
+            // down
             case 's':
-                //cout << 's';
                 movePlayer(playingField, x, y, step, control);
                 Show(playingField);
                 cout << "Count steps: " << step << endl;
                 break;
 
-                // right
+            // right
             case 'd':
-                //bool flag = false;
-
-                //int x = 0, y = 1;
                 movePlayer(playingField, x, y, step, control);
                 Show(playingField);
                 cout << "Count steps: " << step << endl;
-
                 break;
 
             //case 9: return 0;
             //default: cout << "Введіть правильний пункт: \n"; break;
         }
-
     }
+    // ============================================================================
 
     return 0;
 }
