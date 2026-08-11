@@ -4,10 +4,11 @@
 
 #include <iostream>
 #include <vector>
+//#include <array>
 
 using namespace std;
 
-void movePlayer(vector<vector<char>>& new_field, int& x, int& y, int& step, char move, int& coins) {
+void movePlayer(vector<vector<char>>& new_field, int& x, int& y, int& step, char move, int& coins, bool& flag_win) {
     // Питаємо що попереду і якщо можна, заміняємо місцями символи
     switch (move) {
         case 'w':
@@ -30,11 +31,12 @@ void movePlayer(vector<vector<char>>& new_field, int& x, int& y, int& step, char
                 coins++;
             }
             else if (new_field[x-1][y] == 'E') {
-                new_field[x-1][y] = '.';
+                new_field[x][y] = '.';
                 x--;
                 new_field[x][y] = 'P';
                 step++;
-                cout << "You Win! Congratulations!" << endl;
+                // your win
+                flag_win = true;
             }
         break;
 
@@ -56,11 +58,12 @@ void movePlayer(vector<vector<char>>& new_field, int& x, int& y, int& step, char
                 coins++;
             }
             else if (new_field[x][y-1] == 'E') {
-                new_field[x][y-1] = '.';
+                new_field[x][y] = '.';
                 y--;
                 new_field[x][y] = 'P';
                 step++;
-                cout << "You Win! Congratulations!" << endl;
+                // your win
+                flag_win = true;
             }
         break;
 
@@ -88,7 +91,8 @@ void movePlayer(vector<vector<char>>& new_field, int& x, int& y, int& step, char
                 new_field[x][y] = 'P';
                 // Постійно оновлюємо (не залежно від напрямку)
                 step++;
-                cout << "You Win! Congratulations!" << endl;
+                // your win
+                flag_win = true;
             }
         break;
 
@@ -112,11 +116,12 @@ void movePlayer(vector<vector<char>>& new_field, int& x, int& y, int& step, char
             }
             else if (new_field[x][y+1] == 'E') {
                 new_field[x][y] = '.';
-                x++;
+                y++;
                 new_field[x][y] = 'P';
                 // Постійно оновлюємо (не залежно від напрямку)
                 step++;
-                cout << "You Win! Congratulations!" << endl;
+                // your win
+                flag_win = true;
             }
         break;
 
@@ -135,7 +140,6 @@ void Show(vector<vector<char>>& arr) {
 
 
 int main() {
-#include <array>
 
     // відповідно до норм MISRA C++
     //
@@ -144,26 +148,19 @@ int main() {
     //
     // constexpr std::array<std::array<char, MAP_COLS>, MAP_ROWS> map = {{
     //     {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'},
-    //     {'#', 'P', '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', '#'},
-    //     {'#', '.', '#', '#', '.', '.', '#', '.', '.', '#', '#', '.', '#'},
-    //     {'#', '.', '.', '.', '.', '#', '#', '.', '.', '.', '.', '.', '#'},
-    //     {'#', '#', '#', '.', '.', '.', '.', '.', '#', '#', '#', '.', '#'},
-    //     {'#', '.', '.', '.', '#', '#', '.', '.', '.', '.', '.', '.', '#'},
-    //     {'#', '.', '.', '$', '.', '.', '.', '.', '#', '.', '.', '.', '#'},
-    //     {'#', '.', '#', '#', '#', '#', '.', '.', '#', '.', '#', 'E', '#'},
-    //     {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'}
-    // }};
+    //      ....
+    //     }};
 
     int step = 0;                                                                   // рахунок ходів (кроків)
     int x = 1, y = 1;                                                               // початкові координати гравця
     char control;                                                                   // кнопка
     int coins = 0;                                                                  // монети
+    bool flag_win = false;                                                          // флаг перемоги
 
     // ----------------------------------------------------------------------------
     // Playing field
     // ----------------------------------------------------------------------------
     vector <vector<char>> playingField {
-        {
             {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'},
             {'#', 'P', '.', '.', '.', '.', '#', '.', '.', '.', '.', '.', '#'},
             {'#', '.', '#', '#', '.', '.', '#', '.', '.', '#', '#', '.', '#'},
@@ -173,7 +170,6 @@ int main() {
             {'#', '.', '.', '$', '.', '.', '.', '.', '#', '.', '.', '.', '#'},
             {'#', '.', '#', '#', '#', '#', '.', '.', '#', '.', '#', 'E', '#'},
             {'#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#', '#'}
-        }
     };
     // ============================================================================
 
@@ -190,38 +186,42 @@ int main() {
 
             // up
             case 'w':
-                movePlayer(playingField, x, y, step, control, coins);
-                Show(playingField);
-                cout << "Count steps: " << step << endl;
-                cout << "Coins: " << coins << endl;
+                movePlayer(playingField, x, y, step, control, coins, flag_win);
+                // в кожному case, можна винести за switch
+                // Show(playingField);
+                // cout << "Count steps: " << step << endl;
+                // cout << "Coins: " << coins << endl;
+                // if (flag_win) {
+                //     return 0;
+                // }
+
                 break;
 
             // left
             case 'a':
-                movePlayer(playingField, x, y, step, control, coins);
-                Show(playingField);
-                cout << "Count steps: " << step << endl;
-                cout << "Coins: " << coins << endl;
+                movePlayer(playingField, x, y, step, control, coins, flag_win);
                 break;
 
             // down
             case 's':
-                movePlayer(playingField, x, y, step, control, coins);
-                Show(playingField);
-                cout << "Count steps: " << step << endl;
-                cout << "Coins: " << coins << endl;
+                movePlayer(playingField, x, y, step, control, coins, flag_win);
                 break;
 
             // right
             case 'd':
-                movePlayer(playingField, x, y, step, control, coins);
-                Show(playingField);
-                cout << "Count steps: " << step << endl;
-                cout << "Coins: " << coins << endl;
+                movePlayer(playingField, x, y, step, control, coins, flag_win);
                 break;
 
             //case 9: return 0;
             //default: cout << "Введіть правильний пункт: \n"; break;
+        }
+
+        Show(playingField);
+        cout << "Count steps: " << step << endl;
+        cout << "Coins: " << coins << endl;
+        if (flag_win) {
+            cout << "You Win! Congratulations!" << endl;
+            return 0;
         }
     }
     // ============================================================================
