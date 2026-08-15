@@ -153,7 +153,7 @@ int main() {
 
     int step = 0;                                                                   // рахунок ходів (кроків)
     int x = 1, y = 1;                                                               // початкові координати гравця
-    char control;                                                                   // кнопка
+    char button;                                                                   // кнопка
     int coins = 0;                                                                  // монети
     bool flag_win = false;                                                          // флаг перемоги
     bool check = true;                                                             // якщо натискають інші клавіші
@@ -182,48 +182,11 @@ int main() {
     // ----------------------------------------------------------------------------
     // Переміщення гравця P
     // ----------------------------------------------------------------------------
-    while (cin >> control) {
-        switch (control) {
+    while (true) {
 
-            // up
-            case 'w':
-                movePlayer(playingField, x, y, step, control, coins, flag_win);
-                // в кожному case, можна винести за switch
-                // Show(playingField);
-                // cout << "Count steps: " << step << endl;
-                // cout << "Coins: " << coins << endl;
-                // if (flag_win) {
-                //     return 0;
-                // }
-                check = true;
-                break;
-
-            // left
-            case 'a':
-                movePlayer(playingField, x, y, step, control, coins, flag_win);
-                check = true;
-                break;
-
-            // down
-            case 's':
-                movePlayer(playingField, x, y, step, control, coins, flag_win);
-                check = true;
-                break;
-
-            // right
-            case 'd':
-                movePlayer(playingField, x, y, step, control, coins, flag_win);
-                check = true;
-                break;
-
-            //case 9: return 0;
-            default:
-                if (control != 'w' && control != 'a' && control != 's' && control != 'd') {
-                    check = false;
-                    break;
-                }
-        }
-        if (check) {
+        cin >> button;
+        if (button == 'w' || button == 'a' || button == 's' || button == 'd') {
+            movePlayer(playingField, x, y, step, button, coins, flag_win);
             Show(playingField);
             cout << "Count steps: " << step << endl;
             cout << "Coins: " << coins << endl;
@@ -231,6 +194,9 @@ int main() {
                 cout << "You Win! Congratulations!" << endl;
                 return 0;
             }
+        }
+        if (button == 'q') {
+            return 0;
         }
     }
     // ============================================================================
