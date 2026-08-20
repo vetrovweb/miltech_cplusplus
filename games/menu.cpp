@@ -1,11 +1,22 @@
 //
 // Created by Кирило Вєтров on 12.08.2026.
-// Menu for games
+// For games
+//
 #include <iostream>
+#include "instant_read.cpp"
+#include <cstdlib>
 
-using namespace std;
+//using namespace std;
 
-int main() {
+// Невидимі за межами цього CPP-файлу і не засмічують глобальний namespace
+namespace {
+
+    using std::cout;
+    using std::endl;
+    using std::vector;
+    using std::flush;
+    using std::cin;
+    using std::tolower;
 
     // ----------------------------------------------------------------------------
     // Можливі варіанти кольорів для відображення тексту
@@ -20,19 +31,53 @@ int main() {
     constexpr auto white  = "\033[37m";                                     // білий
     // ============================================================================
 
-
     // ----------------------------------------------------------------------------
     // Якщо забрати 'U', то за стандартом MISRA буде попередження '176'
     // знакове число, а ми явно вказуємо на беззнаковість size_t
     constexpr size_t width = 176U;                                          // стандартна ширина терміналу
     //constexpr size_t height = 0;
-    constexpr size_t map_rows = 9U;                                         // за замовчуванням колонки масиву поля
-    constexpr size_t map_cols = 13U;                                        // за замовчуванням рядки масиву поля
+    constexpr size_t rows_default = 9U;                                     // за замовчуванням колонки масиву поля
+    constexpr size_t cols_default = 13U;                                    // за замовчуванням рядки масиву поля
 
-    constexpr auto DIS_MAP = '\t';                                          // відстань між ходами поля гри
+    constexpr auto DIS_MAP = "   ";                                         // відстань між ходами поля
     // ============================================================================
 
-    size_t COUNT_C = ((width / 2U) - (map_rows * 3U));                      // розрахунок центру для масиву поля
+    size_t COUNT_C = ((width / 2U) - (rows_default * 3U));                  // розрахунок центру для масиву поля
+
+    // ----------------------------------------------------------------------------
+    // Загальний відступ для виведення інформації / Центрування
+    // ----------------------------------------------------------------------------
+    void print_indent(const size_t COUNT_C) {
+        for (size_t i = 0U; i < COUNT_C; ++i) {
+            cout << ' ';
+        }
+    }
+    // ============================================================================
+
+    // ----------------------------------------------------------------------------
+
+
+    // ----------------------------------------------------------------------------
+    // Малювання символу у конкретній позиції екрана
+    // ----------------------------------------------------------------------------
+    void draw_symbol(const size_t col, const size_t row, const char symbol) {
+        constexpr size_t start_row = 3U;                                    // над картою є два рядки з UI (coins, steps)
+        // Розраховуємо точні координати в консолі
+        // Y: відступ зверху + рядок
+        // Х: відступ зліва COUNT_C + (колонка * 2, бо виводиться символ + DIS_MAP) + 1 ANSI
+        const size_t screen_x = COUNT_C + (col * 4U) + 1U;
+        const size_t screen_y = start_row + row;
+
+        // \033[1;X H — переміщує курсор у 1-й рядок, X-ту колонку
+        // +1u потрібен, бо в C++ індекси з 0, а в консолі з 1
+        // ANSI-послідовність має суворий формат \033[РЯДОК;КОЛОНКА H (спочатку Y, потім X).
+        cout << "\033[" << screen_y << ';' << screen_x << 'H'
+            << symbol << flush;                                             // flush виконує негайне виведення в термінал
+    }
+    // ============================================================================
+}
+
+int main() {
 
     // ----------------------------------------------------------------------------
     vector <vector<char>> playingField {
@@ -48,11 +93,13 @@ int main() {
     };
     // ----------------------------------------------------------------------------
 
-    vector<vector<char>> map(map_rows, vector<char>(map_cols));
+    //vector<vector<char>> map(map_rows, vector<char>(map_cols));
 
     // statistics info games
-    cout << "                                                               " << "[  .. ]                 " << '\t' << "coins: " << "10$" << '\n';
-    cout << "                                                               " << "[  ... ]                " << '\t' << "steps: " << "22" << '\n';
+    print_indent(COUNT_C);
+    cout << "[  .. ]\t\t\t\t    " << "coins: " << "10$" << '\n';
+    print_indent(COUNT_C);
+    cout << "[  ... ]\t\t\t\t     " << "steps: " << "22" << '\n';
     // rows - посилання на рядок
     // cols - посилання на окремий символ
     // standart view
@@ -76,19 +123,173 @@ int main() {
     // }
     // end
 
-
-
+    // Первинний вивід поля (виводимо всього 1 раз на початку)
+    // Аналог ф-ції show (змінимо потім)
     for (const auto& rows : playingField) {
         // робимо відступи для центрування
-        for (size_t i = 0; i < COUNT_C; i++) {
-            cout << ' ';
-        }
-        for (const auto& cells : rows) {
+        print_indent(COUNT_C);
+
+        for (const char cells : rows) {
             cout << cells << DIS_MAP;
         }
         cout << '\n';
     }
 
 
+    // Очищаємо екран перед початком
+    //cout << "\033[2J";
+
+    // Початкова позиція гравця (завжди відома)
+    //size_t player_x = 3U;
+
+
+    // Частота 750 Гц, тривалість 300 мілісекунд
+    //Beep(750, 300);
+    //cout << "\a\a\a\a\a\a\a\a\a\a\a\a\a\a\a\a\a\a\a\a\a\a\a\a\a\a\a\a\a\a\a\a\a" << '\n';
+    // Для Linux (потрібен встановлений пакет beep або xdotool)
+    //std::system("echo -e '\\a'");
+
+    // Для macOS (використовує вбудований системний голос)
+    //std::system("say 'beep'");
+
+    // Варіант А: Через вісімковий код
+    //std::cout << "\007" << std::flush;
+
+    // Варіант Б: Через шістнадцятковий код
+    //std::cout << "\x07" << std::flush;
+
+
+    // Логіка реакції на керування
+    // if (lower_key == 'w') {
+    //     std::cout << "-> Дія: Рух ВГОРУ" << std::endl;
+    // } else if (lower_key == 'a') {
+    //     std::cout << "-> Дія: Рух ЛІВОРУЧ" << std::endl;
+    // } else if (lower_key == 's') {
+    //     std::cout << "-> Дія: Рух ВНИЗ" << std::endl;
+    // } else if (lower_key == 'd') {
+    //     std::cout << "-> Дія: Рух ПРАВОРУЧ" << std::endl;
+    // } else if (lower_key == 'q') {
+    //     std::cout << "\nВихід з програми..." << std::endl;
+    //     break;
+    // } else {
+    //     std::cout << "-> Некоректна клавіша (не WASD)!" << std::endl;
+    // }
+
+
+    // Рух гравця wasd
+    while (true) {
+        // Зчитуємо клавішу одразу при натисканні
+        char key = InstandRead();
+
+        // Переводимо у нижній регістр (щоб W і w оброблялися однаково)
+        char lower_key = tolower(key);
+
+        if (lower_key == 'w' || lower_key == 'a' || lower_key == 's' || lower_key == 'd') {
+            //movePlayer(playingField, x, y, step, button, coins, flag_win);
+            //Show(playingField);
+            //cout << "Count steps: " << step << endl;
+            //cout << "Coins: " << coins << endl;
+            // if (flag_win) {
+            //     cout << "You Win! Congratulations!" << endl;
+            //     return 0;
+            // }
+
+            // Оновлюємо дані у векторі
+            playingField[3][1] = '.';
+            playingField[3][1] = 'P';
+            // Оновлюємо тільки ці дві точки
+            draw_symbol(1, 0, '.');
+            draw_symbol(2, 0, 'P');
+       }
+        if (lower_key == 'q') {
+            return 0;
+        }
+    }
+    // --- КРОК А: Стираємо гравця зі старої позиції ---
+    // line[player_x] = '.';                                                   // змінюємо масив у пам'яті
+    // draw_char_at(player_x, '.');                                            // змінюємо ТІЛЬКИ ЦЮ точку на екрані
+    //
+    // // --- КРОК Б: Зсуваємо координату вправо ---
+    // player_x = player_x + 1U;
+    //
+    // // --- КРОК В: Малюємо гравця на новій позиції ---
+    // line[player_x] = 'P';                                                   // змінюємо масив у пам'яті
+    // draw_char_at(player_x, 'P');                                            // змінюємо ТІЛЬКИ ЦЮ точку на екрані
+
+
     return 0;
-}
+    }
+
+
+
+//     // Переміщує курсор у консолі на конкретний рядок (row) та колонку (col)
+//     // ANSI-послідовність \033[Y;XH
+//     // Важливо: ANSI координати починаються з 1
+//     // void set_cursor_position(const size_t row, const size_t col) {
+//         std::cout << "\033[" << (map_rows + 1u) << ';' << (map_cols + 1u) << 'H';
+//     // }
+
+/*
+#include <iostream>
+#include <vector>
+#include <thread>  // Для затримки часу std::this_thread::sleep_for
+#include <chrono>  // Для розрахунку часу
+
+
+    // // 1. Функція переміщення курсора консолі у задану позицію (ANSI код)
+    // void set_cursor_position(const size_t col) {
+    //     // \033[1;X H — переміщує курсор у 1-й рядок, X-ту колонку
+    //     // +1u потрібен, бо в C++ індекси з 0, а в консолі з 1
+    //     std::cout << "\033[1;" << (col + 1U) << 'H';
+    // }
+    //
+    // // 2. Малювання 1 символу у конкретній позиції екрана
+    // void draw_char_at(const size_t col, const char symbol) {
+    //     set_cursor_position(col);
+    //     std::cout << symbol << std::flush;
+    // }
+
+    int main() {
+        // // Очищаємо екран перед початком
+        // //std::cout << "\033[2J";
+        //
+        // // Одновимірне поле з 10 елементів
+        // std::vector<char> line = {'#', '.', '.', 'P', '.', '.', '.', '.', '.', '#'};
+        //
+        // // 1. Первинний вивід поля (виводимо всього 1 раз на початку)
+        // for (const char cell : line) {
+        //     std::cout << cell;
+        // }
+        // //std::cout << '\n';
+        //
+        // // Початкова позиція гравця
+        // size_t player_x = 3U;
+        //
+        // // Імітація руху гравця вправо на 4 кроки
+        // for (size_t step = 0u; step < 4u; ++step) {
+        //     // Пауза 1 секунда, щоб побачити крок
+        //     std::this_thread::sleep_for(std::chrono::seconds(1));
+        //
+        //     // --- КРОК А: Стираємо гравця зі старої позиції ---
+        //     line[player_x] = '.';          // Змінюємо масив у пам'яті
+        //     draw_char_at(player_x, '.');  // Змінюємо ТІЛЬКИ ЦЮ точку на екрані
+        //
+        //     // --- КРОК Б: Зсуваємо координату вправо ---
+        //     player_x = player_x + 1u;
+        //
+        //     // --- КРОК В: Малюємо гравця на новій позиції ---
+        //     line[player_x] = 'P';          // Змінюємо масив у пам'яті
+        //     draw_char_at(player_x, 'P');  // Змінюємо ТІЛЬКИ ЦЮ точку на екрані
+        // }
+        //
+        // // Повертаємо курсор нижче, щоб текстове закінчення не затерло дошку
+        // set_cursor_position(15U);
+        // std::cout << "\nРух завершено!\n";
+
+        // std::cout << "Hello world!" << std::endl;
+        // std::cout << "\033[1;80";
+        // std::cout << "Згзі world!" << std::endl;
+
+        return 0;
+    }
+*/

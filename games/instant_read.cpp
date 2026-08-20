@@ -1,5 +1,9 @@
-#include <iostream>
-#include <cctype> // для std::tolower
+//
+// Created by Кирило Вєтров on 19.08.2026.
+// For games
+//
+#include <cctype>                                               // для std::tolower
+#pragma once                                                    // захищає від повторного підключення
 
 // Підключення залежно від операційної системи
 #if defined(_WIN32) || defined(_WIN64)
@@ -9,12 +13,13 @@
     #include <unistd.h>
 #endif
 
+
 // Функція миттєвого зчитування одного символу
 char InstandRead() {
 #if defined(_WIN32) || defined(_WIN64)
     return _getch();
 #else
-    char ch = 0;
+    char ch = '\0';
     struct termios old_term, new_term;
 
     // 1. Зчитуємо поточні налаштування термінала
@@ -36,7 +41,7 @@ char InstandRead() {
     return ch;
 #endif
 }
-
+/*
 int main() {
     std::cout << "=== Тест зчитування клавіш без Enter ===" << std::endl;
     std::cout << "Натискай клавіші на клавіатурі (W, A, S, D)." << std::endl;
@@ -73,3 +78,4 @@ int main() {
 
     return 0;
 }
+*/
