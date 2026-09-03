@@ -52,17 +52,11 @@ add_executable(dinamic_array lessons09/homework/dinamic_array.cpp)
 add_executable(lessons10 lessons10/lessons10.cpp)
 add_executable(reverse lessons10/homework/reverse.cpp)
 add_executable(compression lessons10/homework/compression.cpp)
-add_executable(array lessons10/homework/array.cpp
-        array/array_standart.cpp
-)
+add_executable(array lessons10/homework/array.cpp)
+
+add_executable(array_standart arrays/array_standart.cpp)
 
 add_executable(lessons11 lessons11/lessons11.cpp)
 add_executable(task_manager lessons11/homework/task_manager.cpp)
 #add_executable(vector lessons11/homework/vector.cpp)
 
-add_executable(games games/maze.cpp
-        games/instant_read.cpp
-)
-
-add_executable(menu games/menu.cpp)
-add_executable(test_maze_function games/test_maze_function.cpp)
