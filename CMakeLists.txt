@@ -61,3 +61,4 @@ add_executable(task_manager lessons11/homework/task_manager.cpp)
 #add_executable(vector lessons11/homework/vector.cpp)
 
 add_executable(student OOP2/homework/student.cpp)
+add_executable(employees OOP2/homework/employees.cpp)
