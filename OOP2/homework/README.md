@@ -55,6 +55,7 @@ Salary: 4000
 Bonus: 1300
 Total: 5300
 ----------------
+```
 
 ## 🏦 Завдання 2. Банківські рахунки
 
@@ -91,8 +92,8 @@ Interest: 5%
 Owner: Alex
 Balance: -1500
 Credit limit: 2000
+```
 
-```markdown
 ## 🛒 Завдання 3. Інтернет-магазин
 
 Створіть абстрактний клас `Product`.
@@ -133,8 +134,8 @@ Price: 100
 Discount: 20
 Final price: 80
 ----------------
+```
 
-```markdown
 ## ⚔️ Завдання 4. Персонажі гри
 
 Створіть абстрактний клас `Character`.
@@ -167,8 +168,8 @@ Final price: 80
 ```text
 Warrior HP: 130
 Mage HP: 60
+```
 
-```markdown
 ## 🏆 Завдання 5. Мініпроєкт — система доставки
 
 Самостійно спроєктуйте систему доставки.
@@ -217,8 +218,8 @@ Delivery: Pickup
 Price: 0
 Customer picks up the package
 ----------------
+```
 
-```markdown
 ## ⭐ Додаткове завдання (Express Delivery)
 
 Додайте новий тип `ExpressDelivery`.
@@ -239,6 +240,7 @@ Markdown
 for (Delivery* delivery : deliveries) {
     delivery->showInfo();
 }
+```
 
 ## 🧠 Контрольні питання після виконання
 
