@@ -62,3 +62,5 @@ add_executable(task_manager lessons11/homework/task_manager.cpp)
 
 add_executable(student OOP2/homework/student.cpp)
 add_executable(employees OOP2/homework/employees.cpp)
+
+add_executable(other OOP_linux/homework/other.cpp)
