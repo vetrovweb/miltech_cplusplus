@@ -36,5 +36,9 @@ int main() {
 
     q = 0;
 
+    // int test = 0;
+    int nondelnull = 1;
+    nondelnull = nondelnull / 0;
+
     return 0;
 }
